@@ -16,8 +16,6 @@ buildscript {
     }
 }
 
-val snippetsDir = file("build/generated-snippets")
-
 apply {
     plugin("com.epages.restdocs-api-spec")
 }
@@ -91,28 +89,34 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-// todo config of the plugin
-//tasks {
-//    getByName<Open>("openapi").host = "localhost:8080"
-//        basePath = "/api"
-//        title = "My API"
-//        description = "An ecommerce sample demonstrating restdocs-api-spec"
-//        version = "0.1.0"
-//        format = "json"
-//    }
-//
-//    getByName("openapi3") {
-//        server = "https://localhost:8080"
-//        title = "My API"
-//        description = "An ecommerce sample demonstrating restdocs-api-spec"
-//        version = "0.1.0"
-//        format = "json"
-//        tagDescriptionsPropertiesFile = "src/test/resources/tags.yaml"
-//    }
-//
-//    getByName("postman") {
-//        title = "My API"
-//        version = "0.1.0"
-//        baseUrl = "https://localhost:8080"
-//    }
-//}
+val snippetsDir = file("build/generated-snippets")
+val apiHost = "localhost"
+val apiPort = "8080"
+val apiVersion = "0.1.0"
+val apiTitle = "Custom API"
+val apiDescription = "Sample demonstrating restdocs-api-spec"
+val apiFormat = "json"
+
+configure<com.epages.restdocs.apispec.gradle.OpenApiExtension> {
+    host = "$apiHost:$apiPort"
+    basePath = "/api/v1/"
+    title = apiTitle
+    description = apiDescription
+    version = apiVersion
+    format = apiFormat
+}
+
+configure<com.epages.restdocs.apispec.gradle.OpenApi3Extension> {
+    server = "https://$host:$port"
+    title = apiTitle
+    description = apiDescription
+    version = apiVersion
+    format = apiFormat
+    tagDescriptionsPropertiesFile = "src/test/resources/tags.yaml"
+}
+
+configure<com.epages.restdocs.apispec.gradle.PostmanExtension> {
+    title = apiTitle
+    version = apiVersion
+    baseUrl = "https://$host:$port"
+}
