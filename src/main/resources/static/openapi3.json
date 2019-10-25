@@ -1,0 +1,91 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "API documentation",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost"
+  } ],
+  "tags" : [ ],
+  "paths" : {
+    "/books" : {
+      "post" : {
+        "tags" : [ "books" ],
+        "summary" : "Create a book",
+        "description" : "Create a book",
+        "operationId" : "book-create",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/books1780331338"
+              },
+              "examples" : {
+                "book-create" : {
+                  "value" : "{\"name\":\"It\",\"pages\":666,\"genre\":\"HORROR\",\"author\":{\"id\":1,\"name\":\"Stephen\",\"surname\":\"King\"}}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "201",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/books1780331338"
+                },
+                "examples" : {
+                  "book-create" : {
+                    "value" : "{\"name\":\"It\",\"pages\":666,\"genre\":\"HORROR\",\"author\":{\"id\":1,\"name\":\"Stephen\",\"surname\":\"King\"}}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "books1780331338" : {
+        "type" : "object",
+        "properties" : {
+          "pages" : {
+            "type" : "number",
+            "description" : "Pages count."
+          },
+          "author" : {
+            "type" : "object",
+            "properties" : {
+              "surname" : {
+                "type" : "string",
+                "description" : "The surname of the author."
+              },
+              "name" : {
+                "type" : "string",
+                "description" : "The name of the author."
+              },
+              "id" : {
+                "type" : "number",
+                "description" : "Author identifier."
+              }
+            },
+            "description" : "Author of the book."
+          },
+          "genre" : {
+            "type" : "string",
+            "description" : "Related genre."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the book."
+          }
+        }
+      }
+    }
+  }
+}
