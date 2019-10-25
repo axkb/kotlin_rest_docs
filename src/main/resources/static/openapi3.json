@@ -1,17 +1,18 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "API documentation",
-    "version" : "1.0.0"
+    "title" : "Custom API",
+    "description" : "Sample demonstrating restdocs-api-spec",
+    "version" : "0.1.0"
   },
   "servers" : [ {
-    "url" : "http://localhost"
+    "url" : "http://localhost:8080"
   } ],
   "tags" : [ ],
   "paths" : {
-    "/books" : {
+    "/api/v1/books" : {
       "post" : {
-        "tags" : [ "books" ],
+        "tags" : [ "api" ],
         "summary" : "Create a book",
         "description" : "Create a book",
         "operationId" : "book-create",
@@ -19,7 +20,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/books1780331338"
+                "$ref" : "#/components/schemas/api-v1-books-bookName1780331338"
               },
               "examples" : {
                 "book-create" : {
@@ -35,7 +36,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/books1780331338"
+                  "$ref" : "#/components/schemas/api-v1-books-bookName1780331338"
                 },
                 "examples" : {
                   "book-create" : {
@@ -47,11 +48,45 @@
           }
         }
       }
+    },
+    "/api/v1/books/{bookName}" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "summary" : "Get a book",
+        "description" : "Get a book",
+        "operationId" : "book-get",
+        "parameters" : [ {
+          "name" : "bookName",
+          "in" : "path",
+          "description" : "Book name",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-books-bookName1780331338"
+                },
+                "examples" : {
+                  "book-get" : {
+                    "value" : "{\"name\":\"Preloaded book\",\"pages\":666,\"genre\":\"HORROR\",\"author\":{\"id\":0,\"name\":\"PreloadedName\",\"surname\":\"PreloadedSurname\"}}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components" : {
     "schemas" : {
-      "books1780331338" : {
+      "api-v1-books-bookName1780331338" : {
         "type" : "object",
         "properties" : {
           "pages" : {

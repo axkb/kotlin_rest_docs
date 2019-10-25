@@ -107,7 +107,7 @@ configure<com.epages.restdocs.apispec.gradle.OpenApiExtension> {
 }
 
 configure<com.epages.restdocs.apispec.gradle.OpenApi3Extension> {
-    setServer("https://$apiHost:$apiPort")
+    setServer("http://$apiHost:$apiPort")
     title = apiTitle
     description = apiDescription
     version = apiVersion
@@ -118,5 +118,5 @@ configure<com.epages.restdocs.apispec.gradle.OpenApi3Extension> {
 configure<com.epages.restdocs.apispec.gradle.PostmanExtension> {
     title = apiTitle
     version = apiVersion
-    baseUrl = "https://$apiHost:$apiPort"
+    baseUrl = "http://$apiHost:$apiPort"
 }
