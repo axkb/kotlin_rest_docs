@@ -1,5 +1,8 @@
 package com.docs.autogen.controller
 
+import com.docs.autogen.model.Author
+import com.docs.autogen.model.Book
+import com.docs.autogen.model.Genre
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper
 import com.epages.restdocs.apispec.ResourceDocumentation
 import com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName
@@ -30,17 +33,40 @@ abstract class BaseTest {
 
     val objectMapper: ObjectMapper = ObjectMapper()
 
+    val author = Author(1, "Stephen", "King")
+    val book = Book("It", 666, Genre.HORROR, author)
+
     val bookFields = listOf(
             fieldWithPath("name").description("The name of the book."),
             fieldWithPath("pages").description("Pages count."),
             fieldWithPath("genre").description("Related genre."),
-            fieldWithPath("author").description("Author of the book.")
-    )
-
-    val authorFields = listOf(
+            fieldWithPath("author").description("Author of the book."),
             fieldWithPath("author.id").description("Author identifier."),
             fieldWithPath("author.name").description("The name of the author."),
             fieldWithPath("author.surname").description("The surname of the author.")
+    )
+
+    val authorFields = listOf(
+            fieldWithPath("id").description("Author identifier."),
+            fieldWithPath("name").description("The name of the author."),
+            fieldWithPath("surname").description("The surname of the author.")
+    )
+
+    val getBooksResponseFields = listOf(
+            fieldWithPath("[].name").description("The name of the book."),
+            fieldWithPath("[].pages").description("Pages count."),
+            fieldWithPath("[].genre").description("Related genre."),
+            fieldWithPath("[].author").description("Author of the book."),
+            fieldWithPath("[].author.id").description("Author identifier."),
+            fieldWithPath("[].author.name").description("The name of the author."),
+            fieldWithPath("[].author.surname").description("The surname of the author.")
+    )
+
+    val getAuthorsResponseFields = listOf(
+//            fieldWithPath("[].author").description("Author of the book."),
+            fieldWithPath("[].id").description("Author identifier."),
+            fieldWithPath("[].name").description("The name of the author."),
+            fieldWithPath("[].surname").description("The surname of the author.")
     )
 
     val exceptionFields = listOf(
@@ -53,6 +79,10 @@ abstract class BaseTest {
 
     val bookPathParameters = listOf(
             parameterWithName("bookName").description("Book name")
+    )
+
+    val authorPathParameters = listOf(
+            parameterWithName("authorId").description("Author identifier")
     )
 
     val errorBookExample: String = """

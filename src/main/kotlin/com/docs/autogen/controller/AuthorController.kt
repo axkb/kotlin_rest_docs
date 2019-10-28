@@ -1,6 +1,7 @@
 package com.docs.autogen.controller
 
 import com.docs.autogen.model.Author
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.lang.NonNull
 import org.springframework.web.bind.annotation.*
@@ -11,14 +12,18 @@ import kotlin.collections.HashMap
 @RequestMapping("/api/v1/authors")
 class AuthorController {
 
-    private val authorIdToAuthor = HashMap<Long, Author>()
+    private val preloadedAuthor = Author(0, "PreloadedName", "PreloadedSurname")
+
+    private val authorIdToAuthor = mutableMapOf<Long, Author>(
+            preloadedAuthor.id to preloadedAuthor
+    )
     private val random: Random = Random()
 
     @PostMapping
     fun create(@RequestBody @NonNull author: Author): ResponseEntity<Author> {
         authorIdToAuthor[author.id] = author
         author.id = random.nextLong()
-        return ResponseEntity.ok(author)
+        return ResponseEntity(author, HttpStatus.CREATED)
     }
 
     @GetMapping("/{authorId}")
@@ -35,7 +40,7 @@ class AuthorController {
     fun delete(@PathVariable authorId: Long): ResponseEntity<Unit> {
         val author = authorIdToAuthor[authorId]
         return if (author != null) {
-            authorIdToAuthor.remove(authorId)
+//            authorIdToAuthor.remove(authorId)
             ResponseEntity.ok().build()
         }
         else ResponseEntity.notFound().build()

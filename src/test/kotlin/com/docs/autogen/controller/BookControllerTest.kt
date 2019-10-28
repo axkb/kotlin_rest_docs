@@ -1,6 +1,5 @@
 package com.docs.autogen.controller
 
-import com.docs.autogen.exception.NotFoundException
 import com.docs.autogen.model.Author
 import com.docs.autogen.model.Book
 import com.docs.autogen.model.Genre
@@ -18,14 +17,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationExtension
-import org.springframework.restdocs.headers.HeaderDocumentation
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
 import org.springframework.restdocs.payload.FieldDescriptor
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import javax.servlet.RequestDispatcher
 
 
 @SpringBootTest
@@ -35,14 +31,8 @@ import javax.servlet.RequestDispatcher
 @TestMethodOrder(MethodOrderer.Alphanumeric::class)
 class BookControllerTest : BaseTest() {
 
-    val author = Author(1, "Stephen", "King")
-    val book = Book("It", 666, Genre.HORROR, author)
-
     @Test
     fun createBook() {
-        val fields = ArrayList<FieldDescriptor>(bookFields)
-        fields.addAll(authorFields)
-
         mockMvc.perform(post("/api/v1/books")
                 .content(objectMapper.writeValueAsString(book))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -53,31 +43,62 @@ class BookControllerTest : BaseTest() {
                                 ResourceSnippetParameters.builder()
                                         .tag("book-controller")
                                         .description("Create a book")
-                                        .requestFields(fields)
-                                        .responseFields(fields)
+                                        .requestFields(bookFields)
+                                        .responseFields(bookFields)
                                         .build()))
                 ))
     }
 
     @Test
-    fun getBook() {
-        val fields = ArrayList<FieldDescriptor>(bookFields)
-        fields.addAll(authorFields)
-
-        mockMvc.perform(get("/api/v1/books/{bookName}", "Preloaded book")
+    fun getBookList() {
+        mockMvc.perform(get("/api/v1/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk)
                 .andDo(document("book-get", resource(
                         ResourceSnippetParameters.builder()
                                 .tag("book-controller")
-                                .description("Get a book")
-                                .pathParameters(bookPathParameters)
-                                .responseFields(fields)
+                                .description("Get the list of the books")
+                                .responseFields(getBooksResponseFields)
                                 .build()
                 )))
     }
 
+    @Test
+    fun getBook() {
+        mockMvc.perform(get("/api/v1/books/{bookName}", "Preloaded book")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk)
+                .andDo(document("book-get-by-name", resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("book-controller")
+                                .description("Get a book by name.")
+                                .pathParameters(bookPathParameters)
+                                .responseFields(bookFields)
+                                .build()
+                )))
+    }
+
+    @Test
+    fun deleteBook() {
+        val fields = ArrayList<FieldDescriptor>(bookFields)
+        fields.addAll(authorFields)
+
+        mockMvc.perform(delete("/api/v1/books/{bookName}", "Preloaded book")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk)
+                .andDo(document("book-delete-by-name", resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("book-controller")
+                                .description("Delete book by name.")
+                                .pathParameters(bookPathParameters)
+                                .build()
+                )))
+    }
+
+//    TODO mockmvcresult handles the response as resolved exception
 //    @Test
     @Throws(Exception::class)
     fun getBookWithError() {

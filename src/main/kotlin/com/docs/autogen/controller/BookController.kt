@@ -45,7 +45,7 @@ class BookController {
     fun delete(@PathVariable bookName: String): ResponseEntity<Any> {
         val book = bookIdToBook[bookName]
         return if (book != null) {
-            bookIdToBook.remove(bookName)
+//            bookIdToBook.remove(bookName)
             ResponseEntity.ok().build()
         }
         else throw NotFoundException("Book with name: $bookName, was not found")

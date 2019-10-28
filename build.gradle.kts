@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
     val epagesRestDocsVer = "0.9.5"
-    val springBootVersion = "2.1.9.RELEASE"
+    val springBootVersion = "2.2.0.RELEASE"
 
     repositories {
         mavenCentral()
@@ -53,7 +53,7 @@ sourceSets {
 }
 
 dependencies {
-    val junitJupiterVersion = "5.4.0"
+    val junitJupiterVersion = "5.5.2"
 
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -72,7 +72,7 @@ dependencies {
     testCompile("com.epages:restdocs-api-spec-mockmvc:0.9.5")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+//        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}")
     testImplementation("org.junit.jupiter:junit-jupiter:${junitJupiterVersion}")
