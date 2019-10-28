@@ -108,13 +108,23 @@ Or the manual configuration:
 
 ## Instruction How to run
 
-1. Run the gradle build/testClasses to generate adoc files in build/generated-snippets (default path configuration)
+1. Create the tags.yaml configuration file. It will be used as a map <String, String>
+   <br>Key is the name of the controller displayed on the swagger.html page
+   <br>Value is the description of this controller, also will be displayed on the right side of the swagger.html page
+   <br>For example:
+       ```
+       book-controller: Book Controller
+       author-controller: Author Controller
+       ``` 
+   Two controllers will be displayed, each can be expanded and the list of related endpoints will be provided. 
+
+2. Run the gradle build/testClasses to generate adoc files in build/generated-snippets (default path configuration)
 
     ```
     gradlew build
     ```
 
-2. There are 3 options to generate documentation: openapi3, openapi, postman.
+3. There are 3 options to generate documentation: openapi3, openapi, postman.
 <br>openapi3 more preferable cause of test automation requirements  
 <br>use one of the following depending on your needs
 
@@ -133,26 +143,23 @@ Or the manual configuration:
     // will generate POSTMAN collections
     ```
 
-3. Put the generated file into the resource folder:
+4. Put the generated file into the resource folder:
 
     ```
     resources/static/openapi3.json
     ```
 
-4. Provide the location of the file to the property config:
+5. Provide the location of the file to the property config:
     ```
     swagger-ui.location=/openapi3.json
     ```
 
-5. Create the tags.yaml configuration file. It will be used as a map <String, String>
-<br>Key is the name of the controller displayed on the swagger.html page
-<br>Value is the description of this controller, also will be displayed on the right side of the swagger.html page
-<br>For example:
-    ```
-    book-controller: Book Controller
-    author-controller: Author Controller
-    ``` 
-Two controllers will be displayed, each can be expanded and the list of related endpoints will be provided. 
+UPD: since swagger 2.9.2 cannot render examples in OpenAPI3 use lates swagger with docker:
+
+```shell
+# copy json into your folder and run:
+docker run -p 80:8080 -v c:/Users:/data -e SWAGGER_JSON=/data/openapi3.json swaggerapi/swagger-ui
+```  
 
 ## Useful methods:
 

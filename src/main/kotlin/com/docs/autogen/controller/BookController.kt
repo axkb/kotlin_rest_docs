@@ -10,6 +10,7 @@ import org.springframework.lang.NonNull
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
 @RequestMapping("/api/v1/books")
 class BookController {

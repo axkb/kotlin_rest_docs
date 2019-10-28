@@ -62,8 +62,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-    compile("io.springfox:springfox-swagger2:2.9.2")
-    compile("io.springfox:springfox-swagger-ui:2.9.2")
+//    old swagger not supports the examples open api3 blocks
+//    compile("io.springfox:springfox-swagger2:2.9.2")
+//    compile("io.springfox:springfox-swagger-ui:2.9.2")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")
