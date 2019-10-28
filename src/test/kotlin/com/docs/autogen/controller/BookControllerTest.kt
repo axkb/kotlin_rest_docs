@@ -1,10 +1,14 @@
 package com.docs.autogen.controller
 
+import com.docs.autogen.exception.NotFoundException
 import com.docs.autogen.model.Author
 import com.docs.autogen.model.Book
 import com.docs.autogen.model.Genre
+import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper
 import com.epages.restdocs.apispec.ResourceDocumentation.resource
 import com.epages.restdocs.apispec.ResourceSnippetParameters
+import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.core.Is.`is`
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
@@ -19,7 +23,9 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post
 import org.springframework.restdocs.payload.FieldDescriptor
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import javax.servlet.RequestDispatcher
 
 
 @SpringBootTest
@@ -42,13 +48,15 @@ class BookControllerTest : BaseTest() {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated)
-                .andDo(document("book-create", resource(
-                        ResourceSnippetParameters.builder()
-                                .description("Create a book")
-                                .requestFields(fields)
-                                .responseFields(fields)
-                                .build()
-                )))
+                .andDo(MockMvcRestDocumentationWrapper.document(identifier = "book-create",
+                        snippets = *arrayOf(resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("book-controller")
+                                        .description("Create a book")
+                                        .requestFields(fields)
+                                        .responseFields(fields)
+                                        .build()))
+                ))
     }
 
     @Test
@@ -62,36 +70,34 @@ class BookControllerTest : BaseTest() {
                 .andExpect(status().isOk)
                 .andDo(document("book-get", resource(
                         ResourceSnippetParameters.builder()
+                                .tag("book-controller")
                                 .description("Get a book")
                                 .pathParameters(bookPathParameters)
                                 .responseFields(fields)
                                 .build()
                 )))
     }
-}
+
 //    @Test
-//    @Throws(Exception::class)
-//    fun getBookWithError() {
-//        mockMvc
-////                .perform(get("/api/v1/books/{bookName}", "unknown22")
-////                .contentType(MediaType.APPLICATION_JSON)
-////                .accept(MediaType.APPLICATION_JSON))
-//                .perform(get("/error")
-//                        .requestAttr(RequestDispatcher.ERROR_STATUS_CODE, 404)
-//                        .requestAttr(RequestDispatcher.ERROR_REQUEST_URI, "/api/v1/books/{bookName}")
-//                        .requestAttr(RequestDispatcher.ERROR_MESSAGE,
-//                                "The tag 'http://localhost:8080/tags/123' does not exist"))
-//                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(status().isNotFound)
-//                .andExpect(jsonPath("timestamp", `is`(notNullValue())))
-//                .andExpect(jsonPath("status", `is`(404)))
+    @Throws(Exception::class)
+    fun getBookWithError() {
+        mockMvc.dispatcherServlet.setDetectAllHandlerExceptionResolvers(false)
+        mockMvc.perform(get("/api/v1/books/unknown"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isNotFound)
+                .andExpect(jsonPath("timestamp", `is`(notNullValue())))
+                .andExpect(jsonPath("status", `is`(404)))
+//                .andExpect()
 //                .andExpect(jsonPath("error", `is`("Not Found")))
 //                .andExpect(jsonPath("message", `is`("Book with name: unknown, was not found")))
 //                .andExpect(jsonPath("path", `is`("/api/v1/books/unknown")))
-//                .andDo(document("Error Response", resource(
-//                        ResourceSnippetParameters.builder()
-//                                .pathParameters(bookPathParameters)
-//                                .responseFields(exceptionFields)
-//                                .build()
-//                        )))
-//    }
+                .andDo(MockMvcRestDocumentationWrapper.document(identifier = "Error Response",
+                        snippets = *arrayOf(resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("book-controller")
+//                                        .pathParameters(bookPathParameters)
+                                        .responseFields(exceptionFields)
+                                        .build())))
+                )
+    }
+}

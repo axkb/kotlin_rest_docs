@@ -77,7 +77,7 @@ abstract class BaseTest {
 //    }
 
     fun document(identifier: String, snippet: Snippet): RestDocumentationResultHandler {
-        return MockMvcRestDocumentationWrapper.document(identifier, "", false, snippet)
-//        MockMvcRestDocumentationWrapper.document(identifier = identifier, listOf(snippet)) todo redo to eat
+//        return MockMvcRestDocumentationWrapper.document(identifier, "", false, snippet)
+        return MockMvcRestDocumentationWrapper.document(identifier = identifier, snippets = *arrayOf(snippet))
     }
 }

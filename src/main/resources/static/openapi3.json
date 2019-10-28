@@ -6,13 +6,19 @@
     "version" : "0.1.0"
   },
   "servers" : [ {
-    "url" : "http://localhost:8080"
+    "url" : "http://localhost:8080/api/v1"
   } ],
-  "tags" : [ ],
+  "tags" : [ {
+    "name" : "book-controller",
+    "description" : "Book Controller"
+  }, {
+    "name" : "author-controller",
+    "description" : "Author Controller"
+  } ],
   "paths" : {
     "/api/v1/books" : {
       "post" : {
-        "tags" : [ "api" ],
+        "tags" : [ "book-controller" ],
         "summary" : "Create a book",
         "description" : "Create a book",
         "operationId" : "book-create",
@@ -20,7 +26,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/api-v1-books-bookName1780331338"
+                "$ref" : "#/components/schemas/api-v1-books1780331338"
               },
               "examples" : {
                 "book-create" : {
@@ -36,7 +42,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-v1-books-bookName1780331338"
+                  "$ref" : "#/components/schemas/api-v1-books1780331338"
                 },
                 "examples" : {
                   "book-create" : {
@@ -51,7 +57,7 @@
     },
     "/api/v1/books/{bookName}" : {
       "get" : {
-        "tags" : [ "api" ],
+        "tags" : [ "book-controller" ],
         "summary" : "Get a book",
         "description" : "Get a book",
         "operationId" : "book-get",
@@ -70,7 +76,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-v1-books-bookName1780331338"
+                  "$ref" : "#/components/schemas/api-v1-books1780331338"
                 },
                 "examples" : {
                   "book-get" : {
@@ -86,7 +92,7 @@
   },
   "components" : {
     "schemas" : {
-      "api-v1-books-bookName1780331338" : {
+      "api-v1-books1780331338" : {
         "type" : "object",
         "properties" : {
           "pages" : {
