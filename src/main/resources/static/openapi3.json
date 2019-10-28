@@ -6,7 +6,7 @@
     "version" : "0.1.0"
   },
   "servers" : [ {
-    "url" : "http://localhost:8080/api/v1"
+    "url" : "http://localhost:8080"
   } ],
   "tags" : [ {
     "name" : "book-controller",
@@ -16,7 +16,92 @@
     "description" : "Author Controller"
   } ],
   "paths" : {
+    "/api/v1/authors" : {
+      "get" : {
+        "tags" : [ "author-controller" ],
+        "summary" : "Get the list of the authors",
+        "description" : "Get the list of the authors",
+        "operationId" : "author-get",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-authors519112306"
+                },
+                "examples" : {
+                  "author-get" : {
+                    "value" : "[{\"id\":0,\"name\":\"PreloadedName\",\"surname\":\"PreloadedSurname\"},{\"id\":-2624799289000287629,\"name\":\"Stephen\",\"surname\":\"King\"}]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "author-controller" ],
+        "summary" : "Create an author",
+        "description" : "Create an author",
+        "operationId" : "author-create",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-v1-authors-authorId1429014229"
+              },
+              "examples" : {
+                "author-create" : {
+                  "value" : "{\"id\":1,\"name\":\"Stephen\",\"surname\":\"King\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "201",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-authors-authorId1429014229"
+                },
+                "examples" : {
+                  "author-create" : {
+                    "value" : "{\"id\":-2624799289000287629,\"name\":\"Stephen\",\"surname\":\"King\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/books" : {
+      "get" : {
+        "tags" : [ "book-controller" ],
+        "summary" : "Get the list of the books",
+        "description" : "Get the list of the books",
+        "operationId" : "book-get",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-books-1474959203"
+                },
+                "examples" : {
+                  "book-get" : {
+                    "value" : "[{\"name\":\"Preloaded book\",\"pages\":666,\"genre\":\"HORROR\",\"author\":{\"id\":0,\"name\":\"PreloadedName\",\"surname\":\"PreloadedSurname\"}},{\"name\":\"It\",\"pages\":666,\"genre\":\"HORROR\",\"author\":{\"id\":1,\"name\":\"Stephen\",\"surname\":\"King\"}}]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "post" : {
         "tags" : [ "book-controller" ],
         "summary" : "Create a book",
@@ -55,12 +140,66 @@
         }
       }
     },
+    "/api/v1/authors/{authorId}" : {
+      "get" : {
+        "tags" : [ "author-controller" ],
+        "summary" : "Get a author by identifier.",
+        "description" : "Get a author by identifier.",
+        "operationId" : "author-get-by-id",
+        "parameters" : [ {
+          "name" : "authorId",
+          "in" : "path",
+          "description" : "Author identifier",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-v1-authors-authorId1429014229"
+                },
+                "examples" : {
+                  "author-get-by-id" : {
+                    "value" : "{\"id\":0,\"name\":\"PreloadedName\",\"surname\":\"PreloadedSurname\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "author-controller" ],
+        "summary" : "Delete author by identifier.",
+        "description" : "Delete author by identifier.",
+        "operationId" : "author-delete-by-id",
+        "parameters" : [ {
+          "name" : "authorId",
+          "in" : "path",
+          "description" : "Author identifier",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          }
+        }
+      }
+    },
     "/api/v1/books/{bookName}" : {
       "get" : {
         "tags" : [ "book-controller" ],
-        "summary" : "Get a book",
-        "description" : "Get a book",
-        "operationId" : "book-get",
+        "summary" : "Get a book by name.",
+        "description" : "Get a book by name.",
+        "operationId" : "book-get-by-name",
         "parameters" : [ {
           "name" : "bookName",
           "in" : "path",
@@ -79,7 +218,7 @@
                   "$ref" : "#/components/schemas/api-v1-books1780331338"
                 },
                 "examples" : {
-                  "book-get" : {
+                  "book-get-by-name" : {
                     "value" : "{\"name\":\"Preloaded book\",\"pages\":666,\"genre\":\"HORROR\",\"author\":{\"id\":0,\"name\":\"PreloadedName\",\"surname\":\"PreloadedSurname\"}}"
                   }
                 }
@@ -87,11 +226,51 @@
             }
           }
         }
+      },
+      "delete" : {
+        "tags" : [ "book-controller" ],
+        "summary" : "Delete book by name.",
+        "description" : "Delete book by name.",
+        "operationId" : "book-delete-by-name",
+        "parameters" : [ {
+          "name" : "bookName",
+          "in" : "path",
+          "description" : "Book name",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          }
+        }
       }
     }
   },
   "components" : {
     "schemas" : {
+      "api-v1-authors519112306" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "surname" : {
+              "type" : "string",
+              "description" : "The surname of the author."
+            },
+            "name" : {
+              "type" : "string",
+              "description" : "The name of the author."
+            },
+            "id" : {
+              "type" : "number",
+              "description" : "Author identifier."
+            }
+          }
+        }
+      },
       "api-v1-books1780331338" : {
         "type" : "object",
         "properties" : {
@@ -124,6 +303,61 @@
           "name" : {
             "type" : "string",
             "description" : "The name of the book."
+          }
+        }
+      },
+      "api-v1-authors-authorId1429014229" : {
+        "type" : "object",
+        "properties" : {
+          "surname" : {
+            "type" : "string",
+            "description" : "The surname of the author."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the author."
+          },
+          "id" : {
+            "type" : "number",
+            "description" : "Author identifier."
+          }
+        }
+      },
+      "api-v1-books-1474959203" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "pages" : {
+              "type" : "number",
+              "description" : "Pages count."
+            },
+            "author" : {
+              "type" : "object",
+              "properties" : {
+                "surname" : {
+                  "type" : "string",
+                  "description" : "The surname of the author."
+                },
+                "name" : {
+                  "type" : "string",
+                  "description" : "The name of the author."
+                },
+                "id" : {
+                  "type" : "number",
+                  "description" : "Author identifier."
+                }
+              },
+              "description" : "Author of the book."
+            },
+            "genre" : {
+              "type" : "string",
+              "description" : "Related genre."
+            },
+            "name" : {
+              "type" : "string",
+              "description" : "The name of the book."
+            }
           }
         }
       }
