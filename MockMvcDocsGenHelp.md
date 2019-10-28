@@ -174,3 +174,5 @@ Documentation of the request headers
 * org.springframework.restdocs.headers.HeaderDocumentation.**responseHeaders** - 
 Documentation of the response headers
 
+* com.epages.restdocs.apispec.ResourceSnippetParameters.**tag** - 
+Parameter that responsible for choosing which Swagger block will contain the resource 
