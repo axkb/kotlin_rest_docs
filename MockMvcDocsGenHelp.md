@@ -4,6 +4,7 @@
 - [Test Configuration](#test-configuration)
 - [Instruction How to run](#how-to-run)
 - [Useful methods](#useful-methods)
+- [Documentation Links](#documentation-links)
 
 ## Build Configuration:
 
@@ -126,7 +127,8 @@ Or the manual configuration:
 
 3. There are 3 options to generate documentation: openapi3, openapi, postman.
 <br>openapi3 more preferable cause of test automation requirements  
-<br>use one of the following depending on your needs
+<br>The destination output folder is build/api-spec/
+<br>use one of the following depending on your needs. 
 
     ```
     gradlew openapi3
@@ -182,4 +184,10 @@ Documentation of the request headers
 Documentation of the response headers
 
 * com.epages.restdocs.apispec.ResourceSnippetParameters.**tag** - 
-Parameter that responsible for choosing which Swagger block will contain the resource 
+Parameter that responsible for choosing which Swagger block will contain the resource
+
+## Documentation Links: 
+
+* [Spring RestDocs Reference](https://docs.spring.io/spring-restdocs/docs/current/reference/html5/)
+* [Rest Docs Extension for Openapi Spec](https://github.com/ePages-de/restdocs-api-spec)
+* [Openapi Specification Guide](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md)
