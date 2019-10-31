@@ -98,21 +98,17 @@ class BookControllerTest : BaseTest() {
                 )))
     }
 
-//    TODO mockmvcresult handles the response as resolved exception
-//    @Test
-    @Throws(Exception::class)
+    @Test
     fun getBookWithError() {
-        mockMvc.dispatcherServlet.setDetectAllHandlerExceptionResolvers(false)
-        mockMvc.perform(get("/api/v1/books/unknown"))
+        mockMvc.perform(get("/api/v1/books/{bookName}", "unknown"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isNotFound)
-                .andExpect(jsonPath("timestamp", `is`(notNullValue())))
-                .andExpect(jsonPath("status", `is`(404)))
+//                .andExpect(jsonPath("status", `is`(404)))
 //                .andExpect()
 //                .andExpect(jsonPath("error", `is`("Not Found")))
 //                .andExpect(jsonPath("message", `is`("Book with name: unknown, was not found")))
 //                .andExpect(jsonPath("path", `is`("/api/v1/books/unknown")))
-                .andDo(MockMvcRestDocumentationWrapper.document(identifier = "Error Response",
+                .andDo(MockMvcRestDocumentationWrapper.document(identifier = "{method-name}",
                         snippets = *arrayOf(resource(
                                 ResourceSnippetParameters.builder()
                                         .tag("book-controller")

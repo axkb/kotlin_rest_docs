@@ -70,11 +70,11 @@ abstract class BaseTest {
     )
 
     val exceptionFields = listOf(
-            fieldWithPath("timestamp").description("The time, in milliseconds, at which the error occurred"),
-            fieldWithPath("status").description("The HTTP status code"),
-            fieldWithPath("error").description("Error short message"),
-            fieldWithPath("message").description("Error full message"),
-            fieldWithPath("path").description("The path to which the request was made")
+            fieldWithPath("[].timestamp").description("The time, in milliseconds, at which the error occurred"),
+            fieldWithPath("[].status").description("The HTTP status code"),
+            fieldWithPath("[].error").description("Error short message"),
+            fieldWithPath("[].message").description("Error full message")
+//            fieldWithPath("path").description("The path to which the request was made")
     )
 
     val bookPathParameters = listOf(

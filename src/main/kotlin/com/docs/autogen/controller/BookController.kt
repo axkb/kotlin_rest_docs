@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.lang.NonNull
 import org.springframework.web.bind.annotation.*
-import java.util.*
+import java.time.Instant
 
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
@@ -21,7 +21,6 @@ class BookController {
     private val bookIdToBook = mutableMapOf<String, Book>(
             preloadedBook.name to preloadedBook
     )
-    private val random: Random = Random()
 
     @PostMapping
     fun create(@RequestBody @NonNull book: Book): ResponseEntity<Book> {
@@ -48,7 +47,40 @@ class BookController {
         return if (book != null) {
 //            bookIdToBook.remove(bookName)
             ResponseEntity.ok().build()
-        }
-        else throw NotFoundException("Book with name: $bookName, was not found")
+        } else throw NotFoundException("Book with name: $bookName, was not found")
+    }
+
+    data class ApiError(val error: String,
+                        val message: String,
+                        val status: String,
+                        val timestamp: Instant = Instant.now())
+
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(MethodArgumentNotValidException::class)
+//    fun handleValidationExceptions(MethodArgumentNotValidException ex) : List<ApiError> {
+//        return ex.getBindingResult()
+//                .getAllErrors()
+//                .map { ApiError(it.getCodes(), it.getDefaultMessage()) }
+//                .toList()
+//    }
+//
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(ConstraintViolationException::class)
+//    fun handleValidationExceptions (ConstraintViolationException ex) : List<ApiError> {
+//        return ex.getConstraintViolations()
+//                .map { ApiError(it.getPropertyPath().toString(), it.getMessage()) }
+//                .toList();
+//    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException::class)
+    fun handleNotFoundExceptions (ex: NotFoundException) : List<ApiError> {
+        return listOf(ApiError("NotFoundException", ex.message!!, "404"))
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception::class)
+    fun handleOtherException (ex: Exception): List<ApiError> {
+        return listOf(ApiError(ex.javaClass.canonicalName, ex.message!!, "500"));
     }
 }
